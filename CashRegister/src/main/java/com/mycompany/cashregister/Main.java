@@ -4,6 +4,8 @@
  */
 package com.mycompany.cashregister;
 
+import java.util.Scanner;
+
 /**
  *
  * @author matthewyeend
@@ -27,5 +29,26 @@ public class Main {
         System.out.println("Change: ");
         System.out.println(register.giveChange());
         System.out.println("Expected: 2.0");
+        
+        Scanner in = new Scanner(System.in);
+        
+        System.out.println("Enter Price: ");
+        double price = in.nextDouble();
+        register.reccordPurchase(price);
+        
+        System.out.println("Enter dollars: ");
+        int dollars = in.nextInt();
+        System.out.println("Enter quarters: ");
+        int quaters = in.nextInt();
+        System.out.println("Enter dimes: ");
+        int dimes = in.nextInt();
+        System.out.println("Enter nickels: ");
+        int nickels = in.nextInt();
+        System.out.println("Enter pennies: ");
+        int pennies = in.nextInt();
+        register.enterPayment(dollars, quaters, dimes, nickels, pennies);
+        
+        System.out.println("Your change: ");
+        System.out.println(register.giveChange());
     }
 }
