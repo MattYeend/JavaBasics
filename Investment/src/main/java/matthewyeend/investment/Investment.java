@@ -38,6 +38,20 @@ public class Investment {
     }
     
     /**
+     * Keeps accumulating interest for a given number of years.
+     * @param numberOfYears the number of years to wait
+     */
+    public void waitYears(int numberOfYears) {
+        int i = 1;
+        while (i <= numberOfYears) {
+            double interest = balance * rate / 100;
+            balance = balance + interest;
+            i++;
+        }
+        years = years + numberOfYears;
+    }
+
+    /**
      * Gets the current investment balance.
      * @return the current balance
      */
