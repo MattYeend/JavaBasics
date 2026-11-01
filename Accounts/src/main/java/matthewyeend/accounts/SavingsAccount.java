@@ -16,6 +16,10 @@ public class SavingsAccount extends BankAccount {
      * @param rate the interest rate
      */
     public SavingsAccount(double rate) {
+        if (Double.isNaN(rate) || Double.isInfinite(rate) || rate < 0) {
+            throw new IllegalArgumentException(
+                    "Interest rate must be a finite, non-negative number");
+        }
         interestRate = rate;
     }
     
@@ -24,6 +28,8 @@ public class SavingsAccount extends BankAccount {
      */
     public void addInterest() {
         double interest = getBalance() * interestRate / 100;
-        deposit(interest);
+        if (interest > 0) {
+            deposit(interest);
+        }
     }
 }

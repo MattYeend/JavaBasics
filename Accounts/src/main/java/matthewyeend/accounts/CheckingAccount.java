@@ -25,12 +25,14 @@ public class CheckingAccount extends BankAccount {
         transactionCount = 0;
     }
     
+    @Override
     public void deposit(double amount) {
         transactionCount++;
         // Now add amount to balance
         super.deposit(amount);
     }
     
+    @Override
     public void withdraw(double amount) {
         transactionCount++;
         // Now subtract amount from balance
