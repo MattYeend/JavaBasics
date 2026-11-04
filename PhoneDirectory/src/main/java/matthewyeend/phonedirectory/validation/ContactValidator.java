@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package validation;
+package matthewyeend.phonedirectory.validation;
 
 import java.util.regex.Pattern;
-import model.Contact;
+import matthewyeend.phonedirectory.model.Contact;
 
 /**
  * Allow list validation applied before any data reaches the database layer.
@@ -33,7 +33,7 @@ public final class ContactValidator {
      * @param lastName  the last name to validate
      * @param phone     the phone number to validate
      * @param email     the optional email address to validate
-     * @return a validated, whitespace trimmed {@link Contact}
+     * @return a validated, white space trimmed {@link Contact}
      * @throws ValidationException if any field fails validation
      */
     public static Contact validate(Long id, String firstName, String lastName, String phone, String email)
