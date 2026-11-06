@@ -9,7 +9,7 @@ package matthewyeend.linsearch;
  * @author matthewyeend
  */
 public class LinearSearch {
-    private int[] a;
+    private final int[] a;
     
     /**
      * Constructs the LinearSearch.
