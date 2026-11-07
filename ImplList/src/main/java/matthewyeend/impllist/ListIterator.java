@@ -10,7 +10,7 @@ package matthewyeend.impllist;
  */
 public interface ListIterator {
     /**
-     * Moves the iterator oast eh next element.
+     * Moves the iterator past the next element.
      * @return the traversed element
      */
     Object next();
@@ -29,7 +29,7 @@ public interface ListIterator {
     void add(Object element);
     
     /**
-     * Removes the last traversed. This method may only be called after a call
+     * Removes the last traversed element. This method may only be called after a call
      * to the next() method.
      */
     void remove();

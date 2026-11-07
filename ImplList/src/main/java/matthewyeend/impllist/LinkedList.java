@@ -21,7 +21,7 @@ public class LinkedList {
     }
     
     /**
-     * Returns the first element in the linked list.
+     * Removes and returns the first element in the linked list.
      * @return the first element in the linked list
      */
     public Object removeFirst() {
@@ -52,19 +52,20 @@ public class LinkedList {
         return new LinkedListIterator();
     }
     
-    class Node {
-        public Object data;
-        public Node next;
+    private static class Node {
+        private Object data;
+        private Node next;
     }
+
     
-    class LinkedListIterator implements ListIterator {
+    private class LinkedListIterator implements ListIterator {
         private Node position;
         private Node previous;
         
         /**
          * Constructs an iterator that points to the front of the linked list.
          */
-        public LinkedListIterator() {
+        private LinkedListIterator() {
             position = null;
             previous = null;
         }
@@ -98,7 +99,7 @@ public class LinkedList {
         
         /**
          * Adds an element before the iterator position and moves the iterator
-         * past the inserted position
+         * past the inserted element.
          * @param element the element to add
          */
         public void add(Object element) {
@@ -121,7 +122,7 @@ public class LinkedList {
          */
         public void remove() {
             if (previous == position)
-                throw new NoSuchElementException();
+                throw new IllegalStateException();
             if (position == first) {
                 removeFirst();
             } else {
@@ -136,7 +137,7 @@ public class LinkedList {
          */
         public void set(Object element) {
             if (position == null)
-                throw new NoSuchElementException();
+                throw new IllegalStateException();
             position.data = element;
         }
     }
