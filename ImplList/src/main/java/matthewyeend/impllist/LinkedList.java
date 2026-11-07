@@ -74,10 +74,11 @@ public class LinkedList {
          * Moves the iterator past the next element.
          * @return the traversed element
          */
+        @Override
         public Object next() {
             if (!hasNext())
                 throw new NoSuchElementException();
-            previous = position; // Remember tp remove
+            previous = position; // Remember to remove
             
             if (position == null)
                 position = first;
@@ -90,6 +91,7 @@ public class LinkedList {
          * Tests if there is an element after the iterator position.
          * @return true if there is an element after the iterator position
          */
+        @Override
         public boolean hasNext() {
             if (position == null) 
                 return first != null;
@@ -102,6 +104,7 @@ public class LinkedList {
          * past the inserted element.
          * @param element the element to add
          */
+        @Override
         public void add(Object element) {
             if (position == null) {
                 addFirst(element);
@@ -120,6 +123,7 @@ public class LinkedList {
          * Removes the last traversed element. This method may only be called 
          * after a call to the next() method.
          */
+        @Override
         public void remove() {
             if (previous == position)
                 throw new IllegalStateException();
@@ -135,8 +139,9 @@ public class LinkedList {
          * Sets the last traversed element to a different value.
          * @param element the element to set
          */
+        @Override
         public void set(Object element) {
-            if (position == null)
+            if (previous == position)
                 throw new IllegalStateException();
             position.data = element;
         }
