@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class Main {
     public static void main(String[] args) {
-        Set names = new HashSet(101); // 101 is a prime
+        Set<String> names = new HashSet<>(101); // 101 is a prime
         
         names.add("Harry");
         names.add("Sue");
@@ -30,8 +30,9 @@ public class Main {
         names.remove("Romeo");
         names.remove("George");
         
-        Iterator iter = names.iterator();
-        while (iter.hasNext())
+        Iterator<String> iter = names.iterator();
+        while (iter.hasNext()) {
             System.out.println(iter.next());
+        }
     }
 }
