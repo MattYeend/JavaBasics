@@ -26,23 +26,24 @@ public class SpellCheck {
                 System.out.println(word);
             }
         }
+    }
         
-        /**
-         * Reads all words from a file.
-         * @param filename the name of the file
-         * @return a set with all lower cased words in the file. Here, a word
-         * is a sequence of upper and lower case letters.
-         */
-        public static Set<String> readWords(String filename) 
-                throws FileNotFoundException {
-            Set<String> words = new HashSet<String>();
-            Scanner in = new Scanner(new File(fileName));
-            // User any characters other that a-z or A-Z as delimiters
-            in.useDelimiter("[^a-zA-Z]+");
-            while (in.hasNext()) {
-                words.add(in.next().toLowerCase());
-            }
-            return words;
+    /**
+     * Reads all words from a file.
+     * @param filename the name of the file
+     * @return a set with all lower cased words in the file. Here, a word
+     * is a sequence of upper and lower case letters.
+     * @throws FileNotFoundException if the file cannot be found
+     */
+    public static Set<String> readWords(String filename) 
+        throws FileNotFoundException {
+        Set<String> words = new HashSet<String>();
+        Scanner in = new Scanner(new File(filename));
+        // User any characters other that a-z or A-Z as delimiters
+        in.useDelimiter("[^a-zA-Z]+");
+        while (in.hasNext()) {
+            words.add(in.next().toLowerCase());
         }
+        return words;
     }
 }
