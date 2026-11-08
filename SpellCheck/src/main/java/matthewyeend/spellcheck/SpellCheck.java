@@ -1,9 +1,10 @@
 package matthewyeend.spellcheck;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Scanner;
@@ -15,58 +16,61 @@ import java.util.TreeSet;
  */
 public final class SpellCheck {
 
-    private static final String DEFAULT_DICTIONARY = "words";
-    private static final String DEFAULT_DOCUMENT = "alice10.txt";
-    private static final long MAX_FILE_SIZE_BYTES = 50L * 1024 * 1024;
+    private static final String DICTIONARY_RESOURCE = "/words";
+    private static final String DOCUMENT_RESOURCE = "/alice10.txt";
+    private static final int MAX_RESOURCE_BYTES = 50 * 1024 * 1024;
 
-    private SpellCheck() {}
+    private SpellCheck() {
+        // Utility class, not intended to be instantiated
+    }
 
     public static void main(String[] args) {
-        String dictionaryName = args.length > 0 ? args[0] : DEFAULT_DICTIONARY;
-        String documentName = args.length > 1 ? args[1] : DEFAULT_DOCUMENT;
-
         try {
-            Set<String> dictionaryWords = readWords(dictionaryName);
-            Set<String> documentWords = readWords(documentName);
+            Set<String> dictionaryWords = readWords(DICTIONARY_RESOURCE);
+            Set<String> documentWords = readWords(DOCUMENT_RESOURCE);
 
             // TreeSet gives a sorted, deterministic output
             Set<String> misspelt = new TreeSet<>(documentWords);
             misspelt.removeAll(dictionaryWords);
             misspelt.forEach(System.out::println);
         } catch (IOException e) {
-            System.err.println("Unable to read input file: " + e.getMessage());
+            System.err.println("Unable to read input: " + e.getMessage());
             System.exit(1);
         }
     }
 
     /**
-     * Reads all words from a file.
+     * Reads all words from a class path resource.
      *
-     * @param filename the name of the file
-     * @return a set with all lower-cased words in the file. Here, a word is a
-     * sequence of upper and lower case letters.
-     * @throws IOException if the file is missing, unreadable, not a regular
-     * file, or larger than the permitted size
+     * @param resourceName the absolute class path name, for example "/words"
+     * @return a set with all lower-cased words in the resource. Here, a word
+     * is a sequence of upper and lower case letters.
+     * @throws IOException if the resource is missing, unreadable or larger
+     * than the permitted size
      */
-    public static Set<String> readWords(String filename) throws IOException {
-        // toRealPath resolves symlinks and throws if the file does not exist
-        Path path = Path.of(filename).toRealPath();
-
-        if (!Files.isRegularFile(path) || !Files.isReadable(path)) {
-            throw new IOException("Not a readable regular file: " + path);
-        }
-        if (Files.size(path) > MAX_FILE_SIZE_BYTES) {
-            throw new IOException("File exceeds the permitted size: " + path);
-        }
-
-        Set<String> words = new HashSet<>();
-        try (Scanner in = new Scanner(path, StandardCharsets.UTF_8)) {
-            // Use any characters other than a-z or A-Z as delimiters
-            in.useDelimiter("[^a-zA-Z]+");
-            while (in.hasNext()) {
-                words.add(in.next().toLowerCase(Locale.ROOT));
+    static Set<String> readWords(String resourceName) throws IOException {
+        try (InputStream resource = SpellCheck.class.getResourceAsStream(resourceName)) {
+            if (resource == null) {
+                throw new FileNotFoundException(
+                        "Resource not found on classpath: " + resourceName);
             }
+
+            // Read one byte past the limit so oversized input can be detected
+            byte[] data = resource.readNBytes(MAX_RESOURCE_BYTES + 1);
+            if (data.length > MAX_RESOURCE_BYTES) {
+                throw new IOException("Resource exceeds the permitted size: " + resourceName);
+            }
+
+            Set<String> words = new HashSet<>();
+            try (Scanner in = new Scanner(new ByteArrayInputStream(data),
+                    StandardCharsets.UTF_8)) {
+                // Use any characters other than a-z or A-Z as delimiters
+                in.useDelimiter("[^a-zA-Z]+");
+                while (in.hasNext()) {
+                    words.add(in.next().toLowerCase(Locale.ROOT));
+                }
+            }
+            return words;
         }
-        return words;
     }
 }
