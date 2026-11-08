@@ -4,6 +4,12 @@
 
 package matthewyeend.spellcheck;
 
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  *
  * @author matthewyeend
