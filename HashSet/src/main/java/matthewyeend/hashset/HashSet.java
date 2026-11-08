@@ -33,7 +33,7 @@ public class HashSet<E> extends AbstractSet<E> {
      * the range 0 to length - 1, including for negative hash codes.
      */
     private int indexFor(Object x) {
-        return Math.floorMod(Objects.requireNonNull(x).hashCode(), buckets.length);
+        return Math.abs(Objects.requireNonNull(x).hashCode() % buckets.length);
     }
 
     /**
@@ -64,13 +64,20 @@ public class HashSet<E> extends AbstractSet<E> {
     public boolean add(E x) {
         int h = indexFor(x);
         Node<E> current = buckets[h];
+        Node<E> last = null;
         while (current != null) {
             if (current.data.equals(x)) {
                 return false; // Already in the set
             }
+            last = current;
             current = current.next;
         }
-        buckets[h] = new Node<>(x, buckets[h]);
+        Node<E> newNode = new Node<>(x, null);
+        if (last == null) {
+            buckets[h] = newNode;
+        } else {
+            last.next = newNode;
+        }
         size++;
         return true;
     }
