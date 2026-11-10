@@ -4,14 +4,16 @@
  */
 package matthewyeend.priorityqueue;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  *
  * @author matthewyeend
  */
-public class MinHeap {
-    private final ArrayList<Comparable> elements;
+public class MinHeap<T extends Comparable<? super T>> {
+    private final ArrayList<T> elements;
     
     /**
      * Constructs an empty heap.
@@ -25,12 +27,14 @@ public class MinHeap {
      * Adds a new element to this heap.
      * @param newElement the element to add
      */
-    public void add(Comparable newElement) {
+    public void add(T newElement) {
+        Objects.requireNonNull(newElement, "newElement must not be null");
+
         // Add a new leaf
         elements.add(null);
         int index = elements.size() - 1;
         
-        // Demote parents that are larger than thw new element
+        // Demote parents that are larger than the new element
         while (index > 1
                 && getParent(index).compareTo(newElement) > 0) {
             elements.set(index, getParent(index));
@@ -44,21 +48,29 @@ public class MinHeap {
     /**
      * Gets the minimum element stored in this heap.
      * @return the minimum element
+     * @throws NoSuchElementException if this heap is empty
      */
-    public Comparable peek() {
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Heap is empty");
+        }
         return elements.get(1);
     }
     
     /**
      * Removes the minimum element from this heap.
      * @return the minimum element
+     * @throws NoSuchElementException if this heap is empty
      */
-    public Comparable remove() {
-        Comparable minimum = elements.get(1);
+    public T remove() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Heap is empty");
+        }
+        T minimum = elements.get(1);
         
         // Remove last element
         int lastIndex = elements.size() - 1;
-        Comparable last = elements.remove(lastIndex);
+        T last = elements.remove(lastIndex);
         
         if (lastIndex > 1) {
             elements.set(1, last);
@@ -72,7 +84,7 @@ public class MinHeap {
      * the heap condition.
      */
     private void fixHeap() {
-        Comparable root = elements.get(1);
+        T root = elements.get(1);
         
         int lastIndex = elements.size() - 1;
         // Promote children of removed root while they are smaller than the 
@@ -85,7 +97,7 @@ public class MinHeap {
             if (childIndex <= lastIndex) {
                 // Get smaller child
                 // Get left child first
-                Comparable child = getLeftChild(index);
+                T child = getLeftChild(index);
                 
                 // Use right child instead if it is smaller
                 if (getRightChildIndex(index) <= lastIndex
@@ -114,11 +126,19 @@ public class MinHeap {
     }
     
     /**
-     * Returns the number of elements in
-     * @return this heap.
+     * Returns the number of elements in this heap.
+     * @return the number of elements in this heap
      */
     public int size() {
         return elements.size() - 1;
+    }
+    
+    /**
+     * Checks whether this heap contains no elements.
+     * @return {@code true} if this heap is empty, otherwise {@code false}
+     */
+    public boolean isEmpty() {
+        return size() == 0;
     }
     
     /**
@@ -153,7 +173,7 @@ public class MinHeap {
      * @param index the index of a node in this heap
      * @return the value of the left child of the given node
      */
-    private Comparable getLeftChild(int index) {
+    private T getLeftChild(int index) {
         return elements.get(2 * index);
     }
     
@@ -162,7 +182,7 @@ public class MinHeap {
      * @param index the index of a node in this heap
      * @return the value of the right child of a given node
      */
-    private Comparable getRightChild(int index) {
+    private T getRightChild(int index) {
         return elements.get(2 * index + 1);
     }
     
@@ -171,7 +191,7 @@ public class MinHeap {
      * @param index the index of a node in this heap
      * @return the value of the parent of the given node
      */
-    private Comparable getParent(int index) {
+    private T getParent(int index) {
         return elements.get(index / 2);
     }
 }

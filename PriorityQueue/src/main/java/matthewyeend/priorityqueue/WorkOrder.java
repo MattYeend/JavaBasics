@@ -4,11 +4,13 @@
  */
 package matthewyeend.priorityqueue;
 
+import java.util.Objects;
+
 /**
  *
  * @author matthewyeend
  */
-public class WorkOrder implements Comparable {
+public class WorkOrder implements Comparable<WorkOrder> {
     private final int priority;
     private final String description;
     
@@ -39,20 +41,16 @@ public class WorkOrder implements Comparable {
      * order with a lower priority value is ordered before one with a higher
      * priority value.
      *
-     * @param otherObject the work order to compare against; must be an
-     *                    instance of {@code WorkOrder}
+     * @param other the work order to compare against; must not be
+     *              {@code null}
      * @return a negative integer, zero, or a positive integer as the priority
      *         of this work order is less than, equal to, or greater than that
      *         of the other work order
-     * @throws ClassCastException if {@code otherObject} is not a
-     *                            {@code WorkOrder}
-     * @throws NullPointerException if {@code otherObject} is {@code null}
+     * @throws NullPointerException if {@code other} is {@code null}
      */
     @Override
-    public int compareTo(Object otherObject) {
-        WorkOrder other = (WorkOrder) otherObject;
-        if (priority < other.priority) return -1;
-        if (priority > other.priority) return 1;
-        return 0;
+    public int compareTo(WorkOrder other) {
+        Objects.requireNonNull(other, "other must not be null");
+        return Integer.compare(priority, other.priority);
     }
 }
