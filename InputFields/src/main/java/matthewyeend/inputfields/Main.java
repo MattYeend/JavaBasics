@@ -4,13 +4,16 @@
 
 package matthewyeend.inputfields;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author matthewyeend
  */
 public class Main {
-
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        JFrame frame = new InvestmentFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
