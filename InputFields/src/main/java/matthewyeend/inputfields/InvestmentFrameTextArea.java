@@ -10,31 +10,41 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
  *
  * @author matthewyeend
  */
-public class InvestmentFrame extends JFrame {
-    private static final int FRAME_WIDTH = 450;
-    private static final int FRAME_HEIGHT = 100;
+public class InvestmentFrameTextArea extends JFrame {
+    private static final int FRAME_WIDTH = 400;
+    private static final int FRAME_HEIGHT = 250;
     
+    private static final int AREA_ROWS = 10;
+    private static final int AREA_COLUMNS = 30;
     private static final double DEFAULT_RATE = 5;
     private static final double INITIAL_BALANCE = 1000;
     
     private JLabel rateLabel;
     private JTextField rateField;
     private JButton button;
-    private JLabel resultLabel;
+    private final JTextArea resultArea;
     private JPanel panel;
-    private BankAccount account;
+    private final BankAccount account;
     
-    public InvestmentFrame() {
+    /**
+     * Constructs the frame, creating the bank account with its initial balance
+     * and building the user interface components.
+     *
+     * <p>The frame is sized but not made visible. Call
+     * {@link #setVisible(boolean)} to show it.</p>
+     */
+    public InvestmentFrameTextArea() {
         account = new BankAccount(INITIAL_BALANCE);
-        
-        // Use instance variables for components
-        resultLabel = new JLabel("Balance: " + account.getBalance());
+        resultArea = new JTextArea(AREA_ROWS, AREA_COLUMNS);
+        resultArea.setEditable(false);
         
         // Use helper methods
         createTextField();
@@ -46,6 +56,7 @@ public class InvestmentFrame extends JFrame {
     
     private void createTextField() {
         rateLabel = new JLabel("Interest Rate: ");
+        
         final int FIELD_WIDTH = 10;
         rateField = new JTextField(FIELD_WIDTH);
         rateField.setText("" + DEFAULT_RATE);
@@ -59,7 +70,7 @@ public class InvestmentFrame extends JFrame {
                 double rate = Double.parseDouble(rateField.getText());
                 double interest = account.getBalance() * rate / 100;
                 account.deposit(interest);
-                resultLabel.setText("Balance: " + account.getBalance());
+                resultArea.append(account.getBalance() + "\n");
             }
         }
         
@@ -72,7 +83,8 @@ public class InvestmentFrame extends JFrame {
         panel.add(rateLabel);
         panel.add(rateField);
         panel.add(button);
-        panel.add(resultLabel);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
+        panel.add(scrollPane);
         add(panel);
     }
 }
