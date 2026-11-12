@@ -8,6 +8,6 @@ package matthewyeend.choice;
  *
  * @author matthewyeend
  */
-public class FrontViewerFrame {
+public class FontViewerFrame {
     
 }
