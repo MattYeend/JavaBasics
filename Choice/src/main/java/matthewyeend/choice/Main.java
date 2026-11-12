@@ -25,6 +25,12 @@ public class Main {
             frameTwo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frameTwo.setLocation(400, 50);
             frameTwo.setVisible(true);
+            
+            JFrame frameThree = new ColourViewerFrame();
+            frameThree.setTitle("Colour Viewer");
+            frameThree.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frameThree.setLocation(750, 50);
+            frameThree.setVisible(true);
         });
     }
 }
