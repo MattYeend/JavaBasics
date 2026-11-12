@@ -24,6 +24,39 @@ import javax.swing.border.TitledBorder;
  *
  * @author matthewyeend
  */
-public class FontViewerFrame {
+public class FontViewerFrame extends JFrame {
+    private static final int FRAME_WIDTH = 300;
+    private static final int FRAME_HEIGHT = 400;
     
+    private JLabel sampleField;
+    private JCheckBox italichCheckBox;
+    private JCheckBox boldCheckBox;
+    private JRadioButton smallButton;
+    private JRadioButton mediumButton;
+    private JRadioButton largeButton;
+    private JComboBox facenameCombo;
+    private ActionListener listener;
+    
+    /**
+     * Constructs the frame.
+     */
+    public FontViewerFrame() {
+        // Constructs text sample
+        sampleField = new JLabel("Big Java");
+        add(sampleField, BorderLayout.CENTER);
+        
+        // This listener is shared among all components
+        class ChoiceListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                setSampleFont();
+            }
+        }
+        
+        listener = new ChoiceListener();
+        
+        createControlPanel();
+        setSampleFont();
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
+    }
 }
