@@ -11,9 +11,6 @@ import java.util.Objects;
  * @author matthewyeend
  */
 public final class DepositRunnable implements Runnable {
-
-    private static final int DELAY_MILLIS = 1;
-
     private final BankAccount account;
     private final double amount;
     private final int count;
@@ -39,14 +36,8 @@ public final class DepositRunnable implements Runnable {
 
     @Override
     public void run() {
-        try {
-            for (int i = 1; i <= count; i++) {
-                account.deposit(amount);
-                Thread.sleep(DELAY_MILLIS);
-            }
-        } catch (InterruptedException e) {
-            // Restore the interrupt flag so callers can react to it
-            Thread.currentThread().interrupt();
+        for (int i = 1; i <= count; i++) {
+            account.deposit(amount);
         }
     }
 }

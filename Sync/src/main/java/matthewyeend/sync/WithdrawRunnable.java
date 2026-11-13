@@ -11,9 +11,6 @@ import java.util.Objects;
  * @author matthewyeend
  */
 public final class WithdrawRunnable implements Runnable {
-
-    private static final int DELAY_MILLIS = 1;
-
     private final BankAccount account;
     private final double amount;
     private final int count;
@@ -42,9 +39,9 @@ public final class WithdrawRunnable implements Runnable {
         try {
             for (int i = 1; i <= count; i++) {
                 account.withdraw(amount);
-                Thread.sleep(DELAY_MILLIS);
             }
         } catch (InterruptedException e) {
+            // Restore the interrupt flag so callers can react to it
             Thread.currentThread().interrupt();
         }
     }
