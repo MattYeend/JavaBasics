@@ -8,7 +8,7 @@ package matthewyeend.sync;
  *
  * @author matthewyeend
  */
-public class Sync {
+public class Main {
     public static void main(String[] args) {
         BankAccount account = new BankAccount();
         final double AMOUNT = 100;
