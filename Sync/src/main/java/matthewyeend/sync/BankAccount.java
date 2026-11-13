@@ -31,6 +31,7 @@ public class BankAccount {
      * @param amount the amount to deposit
      */
     public void deposit(double amount) {
+        validateAmount(amount);
         balanceChangeLock.lock();
         try {
             System.out.print("Depositing " + amount);
@@ -49,13 +50,14 @@ public class BankAccount {
      * @throws java.lang.InterruptedException
      */
     public void withdraw(double amount) throws InterruptedException {
+        validateAmount(amount);
         balanceChangeLock.lock();
         try {
             while (balance < amount)
                 sufficientFundsCondition.await();
             System.out.print("Withdrawing " + amount);
             double newBalance = balance - amount;
-            System.out.println(", new balance is" + newBalance);
+            System.out.println(", new balance is " + newBalance);
             balance = newBalance;
         } finally {
             balanceChangeLock.unlock();
@@ -67,6 +69,23 @@ public class BankAccount {
      * @return the current balance
      */
     public double getBalance() {
-        return balance;
+        balanceChangeLock.lock();
+        try {
+            return balance;
+        } finally {
+            balanceChangeLock.unlock();
+        }
+    }
+    
+    /**
+     * Ensures an amount is a positive, finite number.
+     *
+     * @param amount the amount to validate
+     * @throws IllegalArgumentException if the amount is invalid
+     */
+    private static void validateAmount(double amount) {
+        if (Double.isNaN(amount) || Double.isInfinite(amount) || amount <= 0) {
+            throw new IllegalArgumentException("Amount must be a positive, finite number.");
+        }
     }
 }

@@ -4,10 +4,49 @@
  */
 package matthewyeend.sync;
 
+import java.util.Objects;
+
 /**
  *
  * @author matthewyeend
  */
-public class DepositRunnable {
-    
+public final class DepositRunnable implements Runnable {
+
+    private static final int DELAY_MILLIS = 1;
+
+    private final BankAccount account;
+    private final double amount;
+    private final int count;
+
+    /**
+     * Constructs a deposit runnable.
+     *
+     * @param account the account into which to deposit money
+     * @param amount  the amount to deposit in each repetition
+     * @param count   the number of repetitions
+     */
+    public DepositRunnable(BankAccount account, double amount, int count) {
+        this.account = Objects.requireNonNull(account, "account must not be null");
+        if (Double.isNaN(amount) || Double.isInfinite(amount) || amount <= 0) {
+            throw new IllegalArgumentException("amount must be a positive, finite number");
+        }
+        if (count <= 0) {
+            throw new IllegalArgumentException("count must be greater than zero");
+        }
+        this.amount = amount;
+        this.count = count;
+    }
+
+    @Override
+    public void run() {
+        try {
+            for (int i = 1; i <= count; i++) {
+                account.deposit(amount);
+                Thread.sleep(DELAY_MILLIS);
+            }
+        } catch (InterruptedException e) {
+            // Restore the interrupt flag so callers can react to it
+            Thread.currentThread().interrupt();
+        }
+    }
 }
